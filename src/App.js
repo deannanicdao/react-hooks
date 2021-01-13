@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'  // destructure useState from react
 import "./App.css";
 import currencies from "./supported-currencies.json"
 import bcData from "./bitcoin-data.json"
+import {Line, Chart} from 'react-chartjs-2'
 
 // class App extends React.Component {
 //   state = {
@@ -12,6 +13,19 @@ import bcData from "./bitcoin-data.json"
 function App() {
   const [currency, setCurrency] = useState("AUD")
   const [bitcoinData, setBitcoinData] = useState(bcData)
+
+  Chart.defaults.global.defaultFontColor = "#000"
+  Chart.defaults.global.defaultFontSize = 16
+
+  const chartData = {
+      labels: Object.keys(bitcoinData.bpi),
+      datasets: [
+        {
+          label: "Bitcoin",
+          data: Object.values(bitcoinData.bpi)
+        }
+      ]
+  }
 
   const onCurrencyChange = (event) => {
       setCurrency(event.target.value)
@@ -54,10 +68,13 @@ function App() {
 
         <h1>Bitcoin Data for {currency}</h1>
         {
-          Object.keys(bitcoinData.bpi).map(date =>
-                <div key={date}> Date: {date} Value: {bitcoinData.bpi[date]} </div>
-          )
+          // Object.keys(bitcoinData.bpi).map(date =>
+          //       <div key={date}> Date: {date} Value: {bitcoinData.bpi[date]} </div>
+          // )
         }
+        <div>
+          <Line data={chartData} height={250}/>
+        </div>
 
       </p>
     </div>
